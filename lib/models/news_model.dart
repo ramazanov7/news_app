@@ -26,4 +26,5 @@ class News {
       voteAverage: json["vote_average"].toDouble(),
     );
   }
+
 }

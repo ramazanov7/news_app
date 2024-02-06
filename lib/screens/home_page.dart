@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:news_app/models/news_model.dart';
+import 'package:news_app/services/news_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,7 +11,18 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+
+
 class _HomePageState extends State<HomePage> {
+  late Future<List<News>> trendingMoves;
+
+  @override
+  void initState(){
+    super.initState();
+
+    trendingMoves = NewsService().getTrendingMovies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +39,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
 
+      // body 
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
         child: ListView.builder(
@@ -34,7 +48,22 @@ class _HomePageState extends State<HomePage> {
           itemBuilder:(context, index) {
 
             // Section
-            return NewsCard();
+            return Container(
+              child: FutureBuilder(
+                future: trendingMoves,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  } else if (snapshot.hasData) {
+                    return NewsCard();
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              )
+            );
           },
         ),
       )
