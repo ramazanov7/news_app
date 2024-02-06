@@ -13,10 +13,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 29, 29),
+      backgroundColor: Colors.black,
+
+      // app bar
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 52, 52, 52),
-        // elevation: 5.0,
+        backgroundColor: Colors.black,
         title: Text('News',
           style: TextStyle(
             color: Colors.white
@@ -24,27 +25,39 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
+
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+        padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
         child: ListView.builder(
           // lenght of news feeds. ex: 10
           itemCount: 10,
           itemBuilder:(context, index) {
 
             // Section
-            return ListTile(
-              contentPadding: EdgeInsets.only(top: 10),
-              title: Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 0, 186, 192),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-              ),
-            );
+            return NewsCard();
           },
         ),
       )
+    );
+  }
+}
+
+class NewsCard extends StatelessWidget {
+  const NewsCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.only(top: 10),
+      title: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 0, 186, 192),
+          borderRadius: BorderRadius.circular(20)
+        ),
+      ),
     );
   }
 }
