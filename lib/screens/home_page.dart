@@ -1,7 +1,8 @@
-
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:news_app/models/news_model.dart';
+import 'package:news_app/screens/details_screen.dart';
 import 'package:news_app/services/news_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,13 +12,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
-
 class _HomePageState extends State<HomePage> {
   late Future<List<News>> trendingMoves;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     trendingMoves = NewsService().getTrendingMovies();
@@ -26,23 +25,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 41, 41, 41),
 
-      // app bar
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('News',
-          style: TextStyle(
-            color: Colors.white
+        // app bar
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 22, 22, 22),
+          title: Text(
+            'News',
+            style: TextStyle(color: Colors.white),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
 
-      // body 
-      body: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
-        child: Container(
+        // body
+        body: Padding(
+          padding: const EdgeInsets.only( left: 15, right: 15),
           child: FutureBuilder(
             future: trendingMoves,
             builder: (context, snapshot) {
@@ -51,21 +48,22 @@ class _HomePageState extends State<HomePage> {
                   child: Text(snapshot.error.toString()),
                 );
               } else if (snapshot.hasData) {
-                return TrendingSlider(snapshot: snapshot,);
+                return TrendingSlider(
+                  snapshot: snapshot,
+                );
               } else {
                 return Center(child: CircularProgressIndicator());
               }
             },
           ),
-        ),
-      )
-    );
+        ));
   }
 }
 
 class TrendingSlider extends StatelessWidget {
   const TrendingSlider({
-    super.key, required this.snapshot,
+    super.key,
+    required this.snapshot,
   });
 
   final AsyncSnapshot snapshot;
@@ -77,24 +75,73 @@ class TrendingSlider extends StatelessWidget {
       child: ListView.builder(
         // lenght of news feeds. ex: 10
         itemCount: 20,
-        itemBuilder:(context, index) {
-      
+        itemBuilder: (context, index) {
           // Section
-          return ListTile(
-            contentPadding: EdgeInsets.only(top: 10),
-            title: Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 186, 192),
-                borderRadius: BorderRadius.circular(20)
-              ),
-              child: SizedBox(
-                height: 200,
-                child: Image.network(
-                  fit: BoxFit.fitHeight,
-                  '${NewsService.imagePath}${snapshot.data[index].posterPath}'
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetailsScreen(movie: snapshot.data[index])),
+              );
+            },
+            child: ListTile(
+              contentPadding: EdgeInsets.only(top: 10),
+              title: Container(
+                height: 180,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.teal[200],
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                    // image 
+                    Container(
+                      width: 120,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: ClipRRect(
+                          child: Image.network(
+                            fit: BoxFit.cover,
+                            '${NewsService.imagePath}${snapshot.data[index].posterPath}',
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                    ),
+                    SizedBox(width: 20,),
+
+                    // title, vote average
+                    Flexible(
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${snapshot.data[index].title}',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              overflow: TextOverflow.fade,
+                              textAlign: TextAlign.left,
+                              softWrap: true,
+                              maxLines: 4,
+                            ),
+                            Text('Vote average: ${snapshot.data[index].voteAverage}',
+                            )
+                          ],
+                        ),
+                      ),
+                    ) ,
+                    
+                  ],
+                ),
               ),
             ),
           );
