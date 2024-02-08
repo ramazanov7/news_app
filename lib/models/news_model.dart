@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class News {
   final String title;
   final String backdropPath;
@@ -23,7 +25,7 @@ class News {
       overview: json["overview"], 
       posterPath: json["poster_path"], 
       releaseDate: json["release_date"], 
-      voteAverage: json["vote_average"].toDouble(),
+      voteAverage: json["vote_average"].toString(),
     );
   }
 

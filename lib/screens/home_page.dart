@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+
 
 import 'package:flutter/material.dart';
 import 'package:news_app/models/news_model.dart';
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
 
       // app bar
       appBar: AppBar(
@@ -42,50 +42,63 @@ class _HomePageState extends State<HomePage> {
       // body 
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
-        child: ListView.builder(
-          // lenght of news feeds. ex: 10
-          itemCount: 10,
-          itemBuilder:(context, index) {
-
-            // Section
-            return Container(
-              child: FutureBuilder(
-                future: trendingMoves,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString()),
-                    );
-                  } else if (snapshot.hasData) {
-                    return NewsCard();
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              )
-            );
-          },
+        child: Container(
+          child: FutureBuilder(
+            future: trendingMoves,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              } else if (snapshot.hasData) {
+                return TrendingSlider(snapshot: snapshot,);
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       )
     );
   }
 }
 
-class NewsCard extends StatelessWidget {
-  const NewsCard({
-    super.key,
+class TrendingSlider extends StatelessWidget {
+  const TrendingSlider({
+    super.key, required this.snapshot,
   });
+
+  final AsyncSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.only(top: 10),
-      title: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 0, 186, 192),
-          borderRadius: BorderRadius.circular(20)
-        ),
+    return SizedBox(
+      width: double.infinity,
+      child: ListView.builder(
+        // lenght of news feeds. ex: 10
+        itemCount: 20,
+        itemBuilder:(context, index) {
+      
+          // Section
+          return ListTile(
+            contentPadding: EdgeInsets.only(top: 10),
+            title: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 0, 186, 192),
+                borderRadius: BorderRadius.circular(20)
+              ),
+              child: SizedBox(
+                height: 200,
+                child: Image.network(
+                  fit: BoxFit.fitHeight,
+                  '${NewsService.imagePath}${snapshot.data[index].posterPath}'
+                ),
+                
+              ),
+            ),
+          );
+        },
       ),
     );
   }

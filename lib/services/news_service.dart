@@ -14,8 +14,8 @@ class NewsService {
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body); //['results'] as List;
       print(decodedData);
-      return decodedData;
-      // return decodedData.map((news) => News.fromJson(news).toList());
+      return (decodedData['results'] as List<dynamic>) 
+          .map((news) => News.fromJson(news)).toList();
     } else {
       throw Exception('Error'); 
     }
