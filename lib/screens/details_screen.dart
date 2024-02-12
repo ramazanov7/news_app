@@ -14,10 +14,8 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-
-          // App bar 
+          // App bar
           SliverAppBar.large(
-
             // back button
             leading: Container(
               height: 70,
@@ -26,7 +24,6 @@ class DetailsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 34, 34, 34),
                 borderRadius: BorderRadius.circular(8),
-                
               ),
               child: IconButton(
                 onPressed: () {
@@ -37,7 +34,7 @@ class DetailsScreen extends StatelessWidget {
               ),
             ),
 
-            // 
+            //
             expandedHeight: 500,
             pinned: true,
             floating: true,
@@ -50,9 +47,9 @@ class DetailsScreen extends StatelessWidget {
               ),
               background: ClipRRect(
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24)
-                ),
+                    // bottomLeft: Radius.circular(24),
+                    // bottomRight: Radius.circular(24)
+                    ),
                 child: Image.network(
                   '${NewsService.imagePath}${movie.backdropPath}',
                   filterQuality: FilterQuality.high,
@@ -72,57 +69,51 @@ class DetailsScreen extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Container(
                     child: Row(
                       children: [
-
-                        // Release date 
+                        // Release date
                         Container(
-                          
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(10)
-                          ),
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
                           child: Row(
                             children: [
                               Text(
                                 'Release date: ',
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 movie.releaseDate,
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                         ),
 
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
 
-                        // Vote average 
+                        // Vote average
                         Container(
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(10)
-                          ),
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Rating: ',
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                               // Icon(
                               //   Icons.star,
@@ -132,9 +123,7 @@ class DetailsScreen extends StatelessWidget {
                               Text(
                                 '${movie.voteAverage.toString()}',
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               )
                             ],
                           ),

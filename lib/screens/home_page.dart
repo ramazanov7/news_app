@@ -12,6 +12,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+Future<void> _refresh() {
+  return Future.delayed(Duration(seconds: 2));
+}
+
 class _HomePageState extends State<HomePage> {
   late Future<List<News>> trendingMoves;
 
@@ -22,11 +26,13 @@ class _HomePageState extends State<HomePage> {
     trendingMoves = NewsService().getTrendingMovies();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 41, 41, 41),
-
+    
         // app bar
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 22, 22, 22),
@@ -36,25 +42,28 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: true,
         ),
-
+    
         // body
-        body: Padding(
-          padding: const EdgeInsets.only( left: 15, right: 15),
-          child: FutureBuilder(
-            future: trendingMoves,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              } else if (snapshot.hasData) {
-                return TrendingSlider(
-                  snapshot: snapshot,
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: Padding(
+            padding: const EdgeInsets.only( left: 15, right: 15),
+            child: FutureBuilder(
+              future: trendingMoves,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                } else if (snapshot.hasData) {
+                  return TrendingSlider(
+                    snapshot: snapshot,
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
           ),
         ));
   }
