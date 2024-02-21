@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:news_app/models/news_model.dart';
-import 'package:news_app/services/news_service.dart';
+import 'package:news_app/data/models/movies_model.dart';
+import 'package:news_app/services/movies_service.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key, required this.movie});
 
-  final News movie;
+  final Movies movie;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class DetailsScreen extends StatelessWidget {
                     // bottomRight: Radius.circular(24)
                     ),
                 child: Image.network(
-                  '${NewsService.imagePath}${movie.backdropPath}',
+                  '${MovieService.imagePath}${movie.backdropPath}',
                   filterQuality: FilterQuality.high,
                   fit: BoxFit.cover,
                 ),
